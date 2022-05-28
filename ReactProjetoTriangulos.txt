@@ -1,0 +1,136 @@
+import React from 'react'
+import {
+  Image, 
+  Button,
+  View,
+  StatusBar,
+  StyleSheet,
+  TextInput,
+  Alert,
+  Text
+} from 'react-native'
+
+import equilatero from './img/equilatero.png'
+import escaleno from './img/escaleno.png'
+import isoceles from './img/isoceles.png'
+
+export default class App extends React.Component {
+
+  state = {
+      
+  }
+
+
+constructor(props) {
+    super(props)
+    this.state = {
+      txtValor1: "",
+      txtValor2: "",
+      txtValor3: ""
+    }
+  }
+
+  botaoCalcular = _ => {
+    const { txtValor1, txtValor2, txtValor3 } = this.state
+    const valor1 = parseFloat(txtValor1)
+    const valor2 = parseFloat(txtValor2)
+    const valor3 = parseFloat(txtValor3)
+    
+    let categoria = ""
+    if (valor1== valor2 && valor2 == valor3 ) {
+      categoria = "É um triângulo equilátero"
+      this.setState({imagem: equilatero})
+      this.setState({mensagem: categoria})
+    }
+    else if (valor1 == valor2 && valor2 != valor3 ) {
+      categoria = "É um triângulo isóceles"
+      this.setState({mensagem: categoria})
+      this.setState({imagem: isoceles})
+    }
+    else if (valor1 == valor3 && valor3 != valor2 ) {
+      categoria = "É um triângulo isóceles"
+      this.setState({imagem: isoceles})
+      this.setState({mensagem: categoria})
+    }
+    else if (valor2 == valor3 && valor2 != valor1 ) {
+      categoria = "É um triângulo isóceles"
+      this.setState({imagem: isoceles})
+      this.setState({mensagem: categoria})
+    }
+    else if (valor1 != valor2 && valor2 != valor3) {
+      categoria = "É um triângulo escaleno"
+      this.setState({imagem: escaleno})
+      this.setState({mensagem: categoria})
+
+    }
+
+    else if (valor1 == 0 && valor2 != 0 && valor3 != 0 ) {
+      categoria = "Não pode lado com valor 0"
+      this.setState({mensagem: categoria})
+
+    }
+    const mensagem = `${categoria}`
+  }
+
+  
+  render(){
+      const{mensagem} = this.state
+      const{imagem} = this.state
+      return (
+         <View style={styles.container}>
+        <TextInput
+          style={styles.input}
+          placeholder="1"
+          keyboardType='numeric'
+          onChangeText={txtValor1 => this.setState({ txtValor1 })}
+        />
+        <View style={styles.separator} />
+        <TextInput
+          style={styles.input}
+          placeholder="2"
+          keyboardType='numeric'
+          onChangeText={txtValor2 => this.setState({ txtValor2 })}
+        />
+        <View style={styles.separator} />
+        <TextInput
+          style={styles.input}
+          placeholder="3"
+          keyboardType='numeric'
+          onChangeText={txtValor3 => this.setState({ txtValor3 })}
+        />
+        <View style={styles.separator} />
+        <Button
+          title='Classificar'
+          onPress={this.botaoCalcular}
+        />
+       <View style={{marginBottom: 50}} />
+        <Text
+        style={{fontSize: 20, color: 'black', justifyContent: 'center', alignSelf: 'center'}}>{mensagem}</Text>
+        <View style={styles.separator} />
+        <Image
+        source={imagem}
+        style={{width: 110, height: 110, alignSelf: 'center'}}
+      />
+
+        
+        <StatusBar />
+      </View>
+      )
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 30,
+  },
+  input: {
+    borderColor: 'gray',
+    borderWidth: 1,
+    fontSize: 22,
+    paddingHorizontal: 5
+  },
+  separator: {
+    marginBottom: 13
+  }
+  
+})
